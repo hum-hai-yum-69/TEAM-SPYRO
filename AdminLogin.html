@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Parking Admin Pro</title>
-<style>
 
+<style>
 *{
 margin:0;
 padding:0;
@@ -13,101 +13,105 @@ box-sizing:border-box;
 font-family:'Segoe UI', Arial, sans-serif;
 }
 
+/* ===== BACKGROUND (PARKING THEME) ===== */
 body{
-height:100vh;
+min-height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
+padding:20px;
 background:
-linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.6)),
-url("carparking.jpeg") center/cover no-repeat;
-}
-
-
-/* MAIN GLASS CARD */
-.box{
-width:360px;
-padding:35px;
-backdrop-filter:blur(20px);
-background:rgba(255,255,255,0.12);
-border-radius:18px;
-box-shadow:
-0 10px 40px rgba(0,0,0,0.4),
-inset 0 0 20px rgba(255,255,255,0.08);
-text-align:center;
+linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.75)),
+url("https://images.unsplash.com/photo-1506521781263-d8422e82f27a?auto=format&fit=crop&w=1600&q=80")
+center / cover no-repeat;
 color:white;
+}
+
+/* ===== BACK ARROW ===== */
+.back-arrow{
+position:fixed;
+top:18px;
+left:18px;
+font-size:26px;
+cursor:pointer;
+padding:10px 14px;
+border-radius:50%;
+background:rgba(0,0,0,0.5);
+backdrop-filter:blur(6px);
 transition:0.3s;
+z-index:10;
+}
+.back-arrow:hover{
+background:rgba(0,0,0,0.85);
+transform:translateX(-5px);
 }
 
-.box:hover{
-transform:translateY(-3px);
+/* ===== CARD ===== */
+.box{
+width:100%;
+max-width:380px;
+padding:35px;
+border-radius:20px;
+text-align:center;
+backdrop-filter:blur(18px);
+box-shadow:0 15px 45px rgba(0,0,0,0.6);
+background:linear-gradient(135deg,
+rgba(0,200,83,0.35),
+rgba(0,150,136,0.35),
+rgba(33,150,243,0.35));
 }
 
+/* ===== TEXT ===== */
+h2{ margin-bottom:20px; }
 
-/* INPUT STYLE */
+/* ===== INPUTS ===== */
 input{
 width:100%;
-padding:12px;
-margin:10px 0;
-border-radius:8px;
+padding:14px;
+margin:8px 0;
+border-radius:10px;
 border:none;
-background:rgba(255,255,255,0.15);
-color:white;
 outline:none;
-font-size:14px;
-transition:0.3s;
+background:rgba(255,255,255,0.18);
+color:white;
 }
-
 input::placeholder{
 color:rgba(255,255,255,0.7);
 }
 
-input:focus{
-background:rgba(255,255,255,0.25);
-box-shadow:0 0 10px rgba(0,200,83,0.6);
-}
-
-
-/* BUTTON */
+/* ===== BUTTON ===== */
 button{
 width:100%;
-padding:13px;
+padding:14px;
 border:none;
-border-radius:10px;
-margin-top:12px;
+border-radius:12px;
+margin-top:14px;
 cursor:pointer;
-background:linear-gradient(45deg,#00c853,#64dd17);
-color:white;
 font-weight:bold;
-font-size:15px;
-transition:0.3s;
-box-shadow:0 5px 15px rgba(0,200,83,0.5);
+color:white;
+background:linear-gradient(45deg,#00c853,#64dd17);
 }
 
-button:hover{
-transform:translateY(-2px);
-box-shadow:0 8px 20px rgba(0,200,83,0.7);
-}
-
-
-/* SWITCH TEXT */
+/* ===== LINKS ===== */
 .switch{
+margin-top:15px;
+font-size:13px;
 cursor:pointer;
 color:#ffeb3b;
+}
+
+/* ===== STATUS ===== */
+#status{
+margin-top:10px;
 font-size:13px;
-margin-top:14px;
-transition:0.3s;
+min-height:18px;
 }
-
-.switch:hover{
-color:white;
-text-shadow:0 0 8px rgba(255,255,255,0.8);
-}
-
 </style>
 </head>
 
 <body>
+
+<div class="back-arrow" id="backBtn">←</div>
 
 <div class="box">
 
@@ -120,33 +124,33 @@ text-shadow:0 0 8px rgba(255,255,255,0.8);
 <input id="email" placeholder="Admin Email">
 <input id="password" type="password" placeholder="Password">
 
-<button onclick="mainAction()">Login</button>
+<button id="actionBtn">Login</button>
 
-<div class="switch" onclick="toggleForm()" id="switchText">
+<div class="switch" id="signupLink">
 Don't have account? Create account
 </div>
 
-<div class="switch" onclick="resetPass()">Forgot password?</div>
+<div class="switch" id="forgotLink">
+Forgot password?
+</div>
 
 <p id="status"></p>
 
 </div>
 
-
 <script type="module">
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth,
+import {
+getAuth,
 createUserWithEmailAndPassword,
 signInWithEmailAndPassword,
-onAuthStateChanged,
-sendPasswordResetEmail }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
+sendPasswordResetEmail,
+onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getDatabase, ref, set }
 from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-
+/* ===== FIREBASE CONFIG ===== */
 const firebaseConfig={
 apiKey:"AIzaSyAkbz_WM6KT56g1awB-TviU8Uo1svrivJw",
 authDomain:"carparkingapp-9267e.firebaseapp.com",
@@ -158,106 +162,117 @@ const app=initializeApp(firebaseConfig);
 const auth=getAuth(app);
 const db=getDatabase(app);
 
-let isLogin=true;
-
-
-// AUTO LOGIN SESSION
+/* ===== AUTO LOGIN (SAME AS OLD CODE) ===== */
 onAuthStateChanged(auth,(user)=>{
 if(user){
 window.location.href="admin.html";
 }
 });
 
+/* ===== DOM ===== */
+const title=document.getElementById("title");
+const name=document.getElementById("name");
+const phone=document.getElementById("phone");
+const company=document.getElementById("company");
+const email=document.getElementById("email");
+const password=document.getElementById("password");
+const actionBtn=document.getElementById("actionBtn");
+const signupLink=document.getElementById("signupLink");
+const forgotLink=document.getElementById("forgotLink");
+const backBtn=document.getElementById("backBtn");
+const status=document.getElementById("status");
 
-// TOGGLE LOGIN/SIGNUP
-window.toggleForm=function(){
+let mode="login"; // login | signup | forgot
 
-isLogin=!isLogin;
-
-document.getElementById("name").style.display=isLogin?"none":"block";
-document.getElementById("phone").style.display=isLogin?"none":"block";
-document.getElementById("company").style.display=isLogin?"none":"block";
-
-document.getElementById("title").innerText=
-isLogin?"Admin Login":"Create Admin Account";
-
-document.getElementById("switchText").innerText=
-isLogin?"Don't have account? Create account":"Already have account? Login";
-
+/* ===== RESET TO LOGIN ===== */
+function goLogin(){
+mode="login";
+title.innerText="Admin Login";
+name.style.display="none";
+phone.style.display="none";
+company.style.display="none";
+password.style.display="block";
+actionBtn.innerText="Login";
+signupLink.style.display="block";
+forgotLink.style.display="block";
+status.innerText="";
 }
 
+/* ===== BACK ARROW ===== */
+backBtn.addEventListener("click",goLogin);
 
-// MAIN LOGIN/SIGNUP
-window.mainAction=function(){
+/* ===== SIGNUP ===== */
+signupLink.addEventListener("click",()=>{
+mode="signup";
+title.innerText="Create Admin Account";
+name.style.display="block";
+phone.style.display="block";
+company.style.display="block";
+password.style.display="block";
+actionBtn.innerText="Create Account";
+signupLink.style.display="none";
+forgotLink.style.display="none";
+status.innerText="";
+});
 
-const email=document.getElementById("email").value;
-const password=document.getElementById("password").value;
+/* ===== FORGOT PASSWORD ===== */
+forgotLink.addEventListener("click",()=>{
+mode="forgot";
+title.innerText="Reset Password";
+name.style.display="none";
+phone.style.display="none";
+company.style.display="none";
+password.style.display="none";
+actionBtn.innerText="Send Reset Email";
+signupLink.style.display="none";
+forgotLink.style.display="none";
+status.innerText="Enter your admin email";
+});
 
-const allowedDomain="@gmail.com"; // 🔥 admin security
+/* ===== MAIN ACTION ===== */
+actionBtn.addEventListener("click",()=>{
+const emailVal=email.value.trim();
 
-if(!email.includes(allowedDomain)){
-document.getElementById("status").innerText="Only admin email allowed";
+if(!emailVal){
+status.innerText="Email is required";
 return;
 }
 
+if(!emailVal.includes("@gmail.com")){
+status.innerText="Only admin Gmail allowed";
+return;
+}
 
-if(isLogin){
+if(mode==="login"){
+signInWithEmailAndPassword(auth,emailVal,password.value)
+.then(()=>status.innerText="Login successful")
+.catch(e=>status.innerText=e.message);
+}
 
-signInWithEmailAndPassword(auth,email,password)
-.then(()=>{
-
-document.getElementById("status").innerText="Login Success";
-
-})
-.catch(e=>{
-document.getElementById("status").innerText=e.message;
-});
-
-}else{
-
-const name=document.getElementById("name").value;
-const phone=document.getElementById("phone").value;
-const company=document.getElementById("company").value;
-
-createUserWithEmailAndPassword(auth,email,password)
-.then((cred)=>{
-
-// SAVE ADMIN DATA REALTIME DB
+if(mode==="signup"){
+createUserWithEmailAndPassword(auth,emailVal,password.value)
+.then(cred=>{
 set(ref(db,"admins/"+cred.user.uid),{
-name:name,
-phone:phone,
-company:company,
-email:email
+name:name.value,
+phone:phone.value,
+company:company.value,
+email:emailVal
 });
-
-document.getElementById("status").innerText="Admin Created";
-
+status.innerText="Admin account created";
 })
-.catch(e=>{
-document.getElementById("status").innerText=e.message;
+.catch(e=>status.innerText=e.message);
+}
+
+if(mode==="forgot"){
+sendPasswordResetEmail(auth,emailVal)
+.then(()=>status.innerText="Password reset email sent")
+.catch(e=>status.innerText=e.message);
+}
 });
 
-}
-
-}
-
-
-// FORGOT PASSWORD
-window.resetPass=function(){
-
-const email=document.getElementById("email").value;
-
-sendPasswordResetEmail(auth,email)
-.then(()=>{
-
-document.getElementById("status").innerText="Password reset email sent";
-
-});
-
-}
-
+/* INIT */
+goLogin();
 </script>
 
 </body>
-
 </html>
