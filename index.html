@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Parking Management System</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 900px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 0 25px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            margin-bottom: 30px;
+            font-size: 36px;
+            letter-spacing: 2px;
+        }
+
+        .cards {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+        }
+
+        .card {
+            width: 40%;
+            padding: 30px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.15);
+            transition: 0.4s;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        .card h2 {
+            margin-bottom: 15px;
+        }
+
+        .card p {
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 30px;
+            background: #ffffff;
+            color: #2a5298;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #ffd700;
+            color: black;
+        }
+
+        footer {
+            margin-top: 30px;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        @media(max-width: 768px) {
+            .cards {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .card {
+                width: 100%;
+            }
+        }
+
+    </style>
+
+</head>
+<body>
+
+    <div class="container">
+
+        <h1>Parking Management System</h1>
+
+        <div class="cards">
+
+            <!-- Admin Card -->
+            <div class="card">
+                <h2>Admin Panel</h2>
+                <p>Manage parking slots, fees, customers and vehicle records.</p>
+                <a href="AdminLogin.html">
+                    <button class="btn">Go to Admin</button>
+                </a>
+            </div>
+
+            <!-- Customer Card -->
+            <div class="card">
+                <h2>Customer Panel</h2>
+                <p>Check slot availability and parking fee details.</p>
+                <a href="CustomerLogin.html">
+                    
+                    <button class="btn">Go to Customer</button>
+                </a>
+            </div>
+
+        </div>
+
+        <footer>
+            © 2026 Parking Management System | Designed Professionally
+        </footer>
+
+    </div>
+
+</body>
+
+</html>
+
