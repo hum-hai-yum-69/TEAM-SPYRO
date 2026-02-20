@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Parking Management - Customer Login</title>
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+      background-image: url("Images/d57a52db-cd72-4944-94c8-f2aa4d5e6205.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .login-box {
+      width: 330px;
+      padding: 25px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+
+    .login-box h2 {
+      margin-bottom: 10px;
+    }
+
+    .login-box input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    /* ✅ clickable signup text */
+    .signup-text {
+      color: red;
+      font-size: 13px;
+      margin-top: 10px;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    .btn-group {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 15px;
+    }
+
+    .btn-group button {
+      width: 48%;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .login-btn { background-color: #4CAF50; }
+    .signup-btn { background-color: #2196F3; }
+
+    .btn-group button:hover { opacity: 0.9; }
+  </style>
+</head>
+
+<body>
+
+  <div class="login-box">
+    <h2>Customer Login</h2>
+
+    <input type="text" id="customerid" placeholder="Customer ID">
+    <input type="password" id="customerpass" placeholder="Password">
+
+    <!-- ✅ LINKED TEXT -->
+    <div class="signup-text" onclick="customerSignup()">
+      Don’t have an account? Signup / Register
+    </div>
+
+    <div class="btn-group">
+      <button class="login-btn" onclick="customerLogin()">Login</button>
+      <button class="signup-btn" onclick="customerSignup()">Signup</button>
+    </div>
+  </div>
+
+  <script>
+    function customerLogin() {
+      alert("Customer login (demo)");
+    }
+
+    function customerSignup() {
+      alert("Redirect to Customer Signup page (demo)");
+      // window.location.href = "customer-signup.html";
+    }
+  </script>
+
+</body>
+</html>
